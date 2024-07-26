@@ -7,23 +7,24 @@ import ProductList from './productList';
 const Home = () => {
   const [category, setCategory] = useState('');
   const [company, setCompany] = useState('');
-  const [rating, setRating] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [products, setProducts] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
-      category,
-      company,
-      minPrice: minPrice ? parseFloat(minPrice) : undefined,
-      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
-      limit: 10
-    });
-    setProducts(response.data.products);
+    const response = await axios.post('http://localhost:6969/api/products', 
+      {
+        "companyname": company,
+        "categoryname": category,
+        "top": 10,
+        "minPrice": minPrice,
+        "maxPrice": maxPrice
+      }
+    );
+    setProducts(response.data);
   };
-
+  console.log(company, category, minPrice, maxPrice);
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Product Search</h1>

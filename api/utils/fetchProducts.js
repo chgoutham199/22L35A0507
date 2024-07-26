@@ -1,13 +1,27 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://20.244.56.144/test/companies';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzIxOTcxNTA2LCJpYXQiOjE3MjE5NzEyMDYsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6ImUyNDcyZjZmLTkwN2QtNGEzOS04NTJkLTdiNmMzNzAwMTI4YyIsInN1YiI6ImNoaXR0aW5lbmlnb3V0aGFtQGdtYWlsLmNvbSJ9LCJjb21wYW55TmFtZSI6IlZpZ25hbk1hcnQiLCJjbGllbnRJRCI6ImUyNDcyZjZmLTkwN2QtNGEzOS04NTJkLTdiNmMzNzAwMTI4YyIsImNsaWVudFNlY3JldCI6InJEcXFsbGlucmt5cWVGSVkiLCJvd25lck5hbWUiOiJHb3V0aGFtIiwib3duZXJFbWFpbCI6ImNoaXR0aW5lbmlnb3V0aGFtQGdtYWlsLmNvbSIsInJvbGxObyI6IjIyTDM1QTA1MDcifQ.CAzm2bFaRFK2iHmaQxmaxgr8GSJNWJdnV-fVc-FmpRA';
+const AUTH_URL = 'http://20.244.56.144/test/auth';
+const AUTH_BODY = {
+  companyName: "VignanMart",
+  clientID: "e2472f6f-907d-4a39-852d-7b6c3700128c",
+  clientSecret: "rDqqllinrkyqeFIY",
+  ownerName: "Goutham",
+  ownerEmail: "chittinenigoutham@gmail.com",
+  rollNo: "22L35A0507"
+};
 
-const fetchProducts = async (company, category, minPrice, maxPrice, top) => {
+const fetchToken = async () => {
+  const response = await axios.post(AUTH_URL, AUTH_BODY);
+  return response.data.access_token;
+};
+
+const fetchProducts = async (company, category, minPrice, maxPrice, top=10) => {
+  const token = await fetchToken();
   const response = await axios.get(`${BASE_URL}/${company}/categories/${category}/products`, {
     params: { top, minPrice, maxPrice },
     headers: {
-      'Authorization': `Bearer ${TOKEN}`
+      'Authorization': `Bearer ${token}`
     }
   });
   return response.data;

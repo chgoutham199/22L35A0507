@@ -3,6 +3,6 @@ import { getProductsHandler } from '../controller/productController.js';
 
 const productRoutes = express.Router();
 
-productRoutes.get('/products', getProductsHandler);
+productRoutes.post('/products', getProductsHandler);
 
 export default productRoutes;
